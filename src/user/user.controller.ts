@@ -32,4 +32,9 @@ export class UserController {
   remove(@Payload() id: number) {
     return this.userService.remove(id);
   }
+
+  @MessagePattern('login')
+  login(@Payload() credentials: { username: string; password: string }) {
+    return this.userService.login(credentials);
+  }
 }
