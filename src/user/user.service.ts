@@ -13,27 +13,26 @@ export class UserService {
 
   create(createUserDto: CreateUserDto) {
     return this.usersRepository.save(createUserDto);
-    // return 'This action adds a new user';
   }
 
   findAll() {
     return this.usersRepository.find();
-    // return `This action returns all user`;
   }
 
-  findOne(id: number) {
+  findOneById(id: number) {
     return this.usersRepository.findOneBy({ id });
-    // return `This action returns a #${id} user`;
+  }
+
+  findOneByUsername(username: string) {
+    return this.usersRepository.findOneBy({ username });
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
     return this.usersRepository.update(id, updateUserDto);
-    // return `This action updates a #${id} user`;
   }
 
   remove(id: number) {
     return this.usersRepository.delete(id);
-    // return `This action removes a #${id} user`;
   }
 
   login(credentials: { username: string; password: string }) {
