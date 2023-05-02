@@ -1,5 +1,5 @@
 import { Controller } from '@nestjs/common';
-import { MessagePattern, Payload } from '@nestjs/microservices';
+import { EventPattern, MessagePattern, Payload } from '@nestjs/microservices';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -24,8 +24,8 @@ export class UserController {
   }
 
   @MessagePattern('updateUser')
-  update(@Payload() updateObj: { id: number; updateUserDto: UpdateUserDto }) {
-    return this.userService.update(updateObj.id, updateObj.updateUserDto);
+  update(@Payload() updateUserDto: UpdateUserDto) {
+    return this.userService.update(updateUserDto.id, updateUserDto);
   }
 
   @MessagePattern('removeUser')
@@ -36,5 +36,10 @@ export class UserController {
   @MessagePattern('login')
   login(@Payload() credentials: { username: string; password: string }) {
     return this.userService.login(credentials);
+  }
+
+  @EventPattern('orderPlaced')
+  updateOrder(@Payload() userOrders: { id: number; orders: number[] }) {
+    return this.userService.updateOrder(userOrders);
   }
 }

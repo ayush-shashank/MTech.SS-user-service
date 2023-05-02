@@ -4,11 +4,14 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
+import { UserOrder } from './entities/user-order.entity';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User) private usersRepository: Repository<User>,
+    @InjectRepository(UserOrder)
+    private usersOrderRepository: Repository<UserOrder>,
   ) {}
 
   create(createUserDto: CreateUserDto) {
@@ -40,5 +43,12 @@ export class UserService {
       select: { id: true, name: true },
       where: { username: credentials.username, password: credentials.password },
     });
+  }
+
+  updateOrder(userOrders: { id: number; orders: number[] }) {
+    const orders = userOrders.orders.map((order) => {
+      return { userId: userOrders.id, orderId: order };
+    });
+    this.usersOrderRepository.save(orders);
   }
 }
